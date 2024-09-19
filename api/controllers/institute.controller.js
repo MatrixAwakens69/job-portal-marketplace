@@ -17,6 +17,6 @@ export const signup = async (req, res) => {
     console.log(newInstitute);
     res.status(201).json("Institute created successfully");
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };

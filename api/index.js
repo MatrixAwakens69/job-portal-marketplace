@@ -20,10 +20,20 @@ app.get("/", (req, res) => {
   res.send("Test route");
 });
 
+app.listen(process.env.PORT_NO, () => {
+  console.log("Server listening on port " + process.env.PORT_NO);
+});
+
 app.use("/api/employer", employerRouter);
 app.use("/api/institute", instituteRouter);
 app.use("/api/student", studentRouter);
 
-app.listen(process.env.PORT_NO, () => {
-  console.log("Server listening on port " + process.env.PORT_NO);
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
 });

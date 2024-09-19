@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import Student from "../models/student.model.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   try {
     const {
       name,
@@ -29,6 +29,6 @@ export const signup = async (req, res) => {
     await newStudent.save();
     res.status(201).json("Student registered successfully");
   } catch (error) {
-    res.status(500).json({ message: "Error registering student", error });
+    next(error);
   }
 };
