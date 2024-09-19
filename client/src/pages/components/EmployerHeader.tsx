@@ -1,22 +1,43 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { FaBars } from "react-icons/fa";
 
 const EmployerHeader = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <header className="bg-white bg-opacity-10 backdrop-blur-md shadow-md p-4 flex justify-between items-center">
       <div className="text-2xl text-white">Jazzee Marketplace - Employers</div>
-      <div>
-        <Link
-          to="/login"
-          className="px-4 py-2 text-white hover:text-gray-300 transition"
-        >
+      <div className="hidden md:flex">
+        <Link to="/login" className="btn btn-outline btn-primary mx-2">
           Sign In
         </Link>
-        <Link
-          to="/register"
-          className="ml-4 px-4 py-2 bg-blue-500 text-black rounded hover:bg-blue-600 transition"
-        >
+        <Link to="/register" className="btn btn-primary mx-2">
           Join
         </Link>
+      </div>
+      <div className="md:hidden relative">
+        <button className="btn btn-primary" onClick={() => setIsOpen(!isOpen)}>
+          <FaBars />
+        </button>
+        {isOpen && (
+          <div className="absolute right-0 mt-1 w-32 bg-white bg-opacity-10 backdrop-blur-lg rounded-md shadow-lg z-10 animate-dropdown">
+            <Link
+              to="/login"
+              className="block px-4 py-2 text-white hover:bg-blue-500 hover:bg-opacity-20 transition"
+              onClick={() => setIsOpen(false)}
+            >
+              Sign In
+            </Link>
+            <Link
+              to="/register"
+              className="block px-4 py-2 text-white hover:bg-blue-500 hover:bg-opacity-20 transition"
+              onClick={() => setIsOpen(false)}
+            >
+              Join
+            </Link>
+          </div>
+        )}
       </div>
     </header>
   );

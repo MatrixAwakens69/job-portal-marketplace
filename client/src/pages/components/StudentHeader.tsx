@@ -5,16 +5,10 @@ const StudentHeader = () => {
     <header className="bg-white bg-opacity-10 backdrop-blur-md shadow-md p-4 flex justify-between items-center">
       <div className="text-2xl text-white">Jazzee Marketplace - Students</div>
       <div>
-        <Link
-          to="/login"
-          className="px-4 py-2 text-white hover:text-gray-300 transition"
-        >
+        <Link to="/login" className="btn btn-outline btn-secondary mx-2">
           Sign In
         </Link>
-        <Link
-          to="/register"
-          className="ml-4 px-4 py-2 bg-green-500 text-black rounded hover:bg-green-600 transition"
-        >
+        <Link to="/register" className="btn btn-secondary mx-2">
           Join
         </Link>
       </div>
