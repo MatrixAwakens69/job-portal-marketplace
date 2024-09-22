@@ -1,9 +1,28 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaBars } from "react-icons/fa";
 
 const EmployerHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = (event: { target: any }) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <header className="bg-white bg-opacity-10 backdrop-blur-md shadow-md p-4 flex justify-between items-center">
@@ -16,7 +35,7 @@ const EmployerHeader = () => {
           Join
         </Link>
       </div>
-      <div className="md:hidden relative">
+      <div className="md:hidden relative" ref={dropdownRef}>
         <button className="btn btn-primary" onClick={() => setIsOpen(!isOpen)}>
           <FaBars />
         </button>
