@@ -25,32 +25,82 @@ const EmployerHeader = () => {
   }, [isOpen]);
 
   return (
-    <header className="bg-white bg-opacity-10 backdrop-blur-md shadow-md p-4 flex justify-between items-center">
-      <div className="text-2xl text-white">Jazzee Marketplace - Employers</div>
+    <header className="bg-[#13293D] bg-opacity-90 backdrop-blur-md shadow-md p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
+      <div className="text-2xl text-white">Jazzee Marketplace</div>
+      <div className="hidden md:flex md:space-x-4">
+        <Link
+          to="/overview"
+          className="text-white hover:text-[#3E92CC] transition"
+        >
+          Overview
+        </Link>
+        <Link
+          to="/hiring"
+          className="text-white hover:text-[#3E92CC] transition"
+        >
+          Who's Hiring
+        </Link>
+        <Link
+          to="/about"
+          className="text-white hover:text-[#3E92CC] transition"
+        >
+          About Us
+        </Link>
+      </div>
       <div className="hidden md:flex">
-        <Link to="/login" className="btn btn-outline btn-primary mx-2">
+        <Link
+          to="/login"
+          className="btn btn-outline rounded-full btn-primary mx-2 text-white border-[#3E92CC] hover:bg-[#3E92CC]"
+        >
           Sign In
         </Link>
-        <Link to="/register" className="btn btn-primary mx-2">
+        <Link
+          to="/register"
+          className="btn btn-primary rounded-full mx-2 bg-[#3E92CC] text-[#13293D] hover:bg-[#2A628F]"
+        >
           Join
         </Link>
       </div>
       <div className="md:hidden relative" ref={dropdownRef}>
-        <button className="btn btn-primary" onClick={() => setIsOpen(!isOpen)}>
+        <button
+          className="btn btn-primary bg-[#3E92CC] text-[#13293D] hover:bg-[#2A628F]"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <FaBars />
         </button>
         {isOpen && (
-          <div className="absolute right-0 mt-1 w-32 bg-white bg-opacity-10 backdrop-blur-lg rounded-md shadow-lg z-10 animate-dropdown">
+          <div className="absolute right-0 mt-1 w-48 bg-[#13293D] bg-opacity-90 backdrop-blur-lg rounded-md shadow-lg z-10 animate-dropdown">
+            <Link
+              to="/overview"
+              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+              onClick={() => setIsOpen(false)}
+            >
+              Overview
+            </Link>
+            <Link
+              to="/hiring"
+              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+              onClick={() => setIsOpen(false)}
+            >
+              Who's Hiring
+            </Link>
+            <Link
+              to="/about"
+              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+              onClick={() => setIsOpen(false)}
+            >
+              About Us
+            </Link>
             <Link
               to="/login"
-              className="block px-4 py-2 text-white hover:bg-blue-500 hover:bg-opacity-20 transition"
+              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
               onClick={() => setIsOpen(false)}
             >
               Sign In
             </Link>
             <Link
               to="/register"
-              className="block px-4 py-2 text-white hover:bg-blue-500 hover:bg-opacity-20 transition"
+              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
               onClick={() => setIsOpen(false)}
             >
               Join

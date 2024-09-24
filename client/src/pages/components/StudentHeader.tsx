@@ -26,9 +26,7 @@ const StudentHeader = () => {
 
   return (
     <header className="bg-[#2B3A67] bg-opacity-90 backdrop-blur-md shadow-md p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
-      <div className="text-2xl text-[#FFFD82]">
-        Jazzee Marketplace - Students
-      </div>
+      <div className="text-2xl text-[#FFFD82]">Jazzee Marketplace</div>
       <div className="hidden md:flex md:space-x-4">
         <Link
           to="/overview"
