@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import Employer from "../models/employer.model.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
   try {
     const { name, email, password, logo, description, website } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);

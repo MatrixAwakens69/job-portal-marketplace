@@ -21,7 +21,7 @@ const EmployerLanding = () => {
               className="px-6 py-3 mb-4 md:mb-0 md:mr-4 rounded-full text-[#FFFD82] focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
             />
             <a
-              href="/register"
+              href="/register/employer"
               className="px-6 py-3 bg-[#3E92CC] text-[#13293D] rounded-full hover:bg-[#2A628F] transition"
             >
               Join Now
@@ -122,7 +122,7 @@ const EmployerLanding = () => {
             Join thousands of employers who are finding top talent with us.
           </p>
           <a
-            href="/register"
+            href="/register/employer"
             className="px-6 py-3 bg-[#3E92CC] text-[#13293D] rounded-full hover:bg-[#2A628F] transition"
           >
             Join Now
