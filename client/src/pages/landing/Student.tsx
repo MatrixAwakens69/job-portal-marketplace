@@ -21,7 +21,7 @@ const StudentLanding = () => {
               className="px-6 py-3 mb-4 md:mb-0 md:mr-4 rounded-full text-[#FFFD82] focus:outline-none focus:ring-2 focus:ring-[#FF9B71]"
             />
             <a
-              href="/register"
+              href="/student/register"
               className="px-6 py-3 bg-[#FF9B71] text-[#2B3A67] rounded-full hover:bg-[#E84855] transition"
             >
               Join Now
@@ -118,7 +118,7 @@ const StudentLanding = () => {
             Join millions of students who are advancing their careers with us.
           </p>
           <a
-            href="/register"
+            href="/student/register"
             className="px-6 py-3 bg-[#FF9B71] text-[#2B3A67] rounded-full hover:bg-[#E84855] transition"
           >
             Join Now

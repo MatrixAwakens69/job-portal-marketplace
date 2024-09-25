@@ -122,7 +122,7 @@ const EmployerLanding = () => {
             Join thousands of employers who are finding top talent with us.
           </p>
           <a
-            href="/register/employer"
+            href="/employer/register"
             className="px-6 py-3 bg-[#3E92CC] text-[#13293D] rounded-full hover:bg-[#2A628F] transition"
           >
             Join Now

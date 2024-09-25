@@ -26,7 +26,9 @@ const StudentHeader = () => {
 
   return (
     <header className="bg-[#2B3A67] bg-opacity-90 backdrop-blur-md shadow-md p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
-      <div className="text-2xl text-[#FFFD82]">Jazzee Marketplace</div>
+      <Link to="/student" className="text-2xl text-white">
+        Jazzee Marketplace
+      </Link>
       <div className="hidden md:flex md:space-x-4">
         <Link
           to="/overview"
@@ -49,13 +51,13 @@ const StudentHeader = () => {
       </div>
       <div className="hidden md:flex">
         <Link
-          to="/login"
+          to="/student/login"
           className="btn btn-outline rounded-full btn-secondary mx-2 text-[#FFFD82] border-[#FF9B71] hover:bg-[#FF9B71]"
         >
           Sign In
         </Link>
         <Link
-          to="/register"
+          to="/student/register"
           className="btn btn-secondary rounded-full mx-2 bg-[#FF9B71] text-[#2B3A67] hover:bg-[#E84855]"
         >
           Join
@@ -92,14 +94,14 @@ const StudentHeader = () => {
               About Us
             </Link>
             <Link
-              to="/login"
+              to="/student/login"
               className="block px-4 py-2 text-[#FFFD82] hover:bg-[#FF9B71] hover:bg-opacity-20 transition"
               onClick={() => setIsOpen(false)}
             >
               Sign In
             </Link>
             <Link
-              to="/register"
+              to="/student/register"
               className="block px-4 py-2 text-[#FFFD82] hover:bg-[#FF9B71] hover:bg-opacity-20 transition"
               onClick={() => setIsOpen(false)}
             >

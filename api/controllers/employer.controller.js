@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
 import Employer from "../models/employer.model.js";
+import jwt from "jsonwebtoken";
+import { errorHandler } from "../utils/error.js";
 
 export const signup = async (req, res, next) => {
   try {
@@ -26,13 +28,21 @@ export const signin = async (req, res, next) => {
     const { email, password } = req.body;
     const employer = await Employer.findOne({ email });
     if (!employer) {
-      return res.status(400).json("Invalid email or password");
+      throw errorHandler(400, "Invalid email or password");
     }
     const validPassword = bcrypt.compareSync(password, employer.password);
     if (!validPassword) {
-      return res.status(400).json("Invalid email or password");
+      throw errorHandler(400, "Invalid email or password");
     }
-    res.status(200).json("Signin successful");
+    const token = jwt.sign({ id: employer._id }, process.env.JWT_KEY);
+    const { password: pass, ...rest } = employer._doc;
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 24 * 60 * 60 * 365),
+      })
+      .status(200)
+      .json(rest);
   } catch (error) {
     next(error);
   }
