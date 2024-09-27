@@ -14,6 +14,7 @@ import EmployerDashboard from "./pages/Dashboard/EmployerDashboard.tsx";
 import StudentSignup from "./pages/Register/StudentSignup.tsx";
 import StudentSignin from "./pages/SignIn/StudentSignin.tsx";
 import StudentDashboard from "./pages/Dashboard/StudentDashboard.tsx";
+import JobPosting from "./pages/JobPosting.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -26,6 +27,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/employer/register" element={<EmployerSignup />} />
         <Route path="/employer/login" element={<EmployerSignin />} />
         <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+        <Route path="/employer/create" element={<JobPosting />} />
         <Route path="/student" element={<StudentLanding />} />
         <Route path="/student/register" element={<StudentSignup />} />
         <Route path="/student/login" element={<StudentSignin />} />

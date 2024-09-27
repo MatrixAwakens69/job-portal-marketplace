@@ -26,12 +26,12 @@ const StudentHeader = () => {
 
   return (
     <header className="bg-[#2B3A67] bg-opacity-90 backdrop-blur-md shadow-md p-4 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
-      <Link to="/student" className="text-2xl text-white">
+      <Link to="/" className="text-2xl text-white">
         Jazzee Marketplace
       </Link>
       <div className="hidden md:flex md:space-x-4">
         <Link
-          to="/overview"
+          to="/student"
           className="text-[#FFFD82] hover:text-[#FF9B71] transition"
         >
           Overview
@@ -73,7 +73,7 @@ const StudentHeader = () => {
         {isOpen && (
           <div className="absolute right-0 mt-1 w-48 bg-[#2B3A67] bg-opacity-90 backdrop-blur-lg rounded-md shadow-lg z-10 animate-dropdown">
             <Link
-              to="/overview"
+              to="/student"
               className="block px-4 py-2 text-[#FFFD82] hover:bg-[#FF9B71] hover:bg-opacity-20 transition"
               onClick={() => setIsOpen(false)}
             >

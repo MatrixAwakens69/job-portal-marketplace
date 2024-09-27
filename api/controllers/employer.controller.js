@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import Employer from "../models/employer.model.js";
+import JobPosting from "../models/jobPosting.model.js";
 import jwt from "jsonwebtoken";
 import { errorHandler } from "../utils/error.js";
 
@@ -42,7 +43,28 @@ export const signin = async (req, res, next) => {
         expires: new Date(Date.now() + 24 * 60 * 60 * 365),
       })
       .status(200)
-      .json(rest);
+      .json({ ...rest, token });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createJobPosting = async (req, res, next) => {
+  try {
+    const { title, description, requirements, location, salary } = req.body;
+    const employerId = req.user.id;
+
+    const newJobPosting = new JobPosting({
+      title,
+      description,
+      requirements: requirements.split(","),
+      location: location.split(","),
+      salary,
+      employer_id: employerId,
+    });
+
+    await newJobPosting.save();
+    res.status(201).json("Job posting created successfully");
   } catch (error) {
     next(error);
   }
