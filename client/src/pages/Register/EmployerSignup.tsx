@@ -1,13 +1,15 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import EmployerHeader from "../components/EmployerHeader";
-import Footer from "../components/Footer"; // Import Footer component
+import Footer from "../components/Footer";
 
 const EmployerSignup = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFileUpload = async (file: File) => {
     const storageRef = ref(storage, `avatars/${file.name}`);
@@ -18,37 +20,46 @@ const EmployerSignup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(formRef.current!);
-    const file = formData.get("avatar") as File;
-    const avatarUrl = await handleFileUpload(file);
+    setLoading(true);
+    setError(null);
 
-    let website = formData.get("website") as string;
-    if (!website.startsWith("http://") && !website.startsWith("https://")) {
-      website = "https://" + website;
-    }
+    try {
+      const formData = new FormData(formRef.current!);
+      const file = formData.get("avatar") as File;
+      const avatarUrl = await handleFileUpload(file);
 
-    const data = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      avatar: avatarUrl,
-      description: formData.get("description"),
-      website,
-    };
+      let website = formData.get("website") as string;
+      if (!website.startsWith("http://") && !website.startsWith("https://")) {
+        website = "https://" + website;
+      }
 
-    const response = await fetch("/api/employer/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+      const data = {
+        name: formData.get("name"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+        avatar: avatarUrl,
+        description: formData.get("description"),
+        website,
+      };
 
-    if (response.ok) {
-      alert("Account created successfully!");
-      navigate("/employer/login");
-    } else {
-      alert("Account creation failed");
+      const response = await fetch("/api/employer/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        navigate("/employer/login");
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Account creation failed");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,8 +115,9 @@ const EmployerSignup = () => {
               <button
                 type="submit"
                 className="w-full py-2 bg-[#3E92CC] text-[#13293D] rounded-full hover:bg-[#2A628F] transition transform hover:scale-105"
+                disabled={loading}
               >
-                Register
+                {loading ? "Registering..." : "Register"}
               </button>
             </form>
             <div className="mt-4 text-center">
@@ -117,6 +129,9 @@ const EmployerSignup = () => {
                 sign in
               </Link>
             </div>
+            {error && (
+              <div className="text-red-500 mb-4 text-center">{error}</div>
+            )}
           </div>
         </div>
       </div>

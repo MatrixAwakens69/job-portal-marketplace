@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./index.css";
@@ -15,9 +14,11 @@ import StudentSignup from "./pages/Register/StudentSignup.tsx";
 import StudentSignin from "./pages/SignIn/StudentSignin.tsx";
 import StudentDashboard from "./pages/Dashboard/StudentDashboard.tsx";
 import JobPosting from "./pages/JobPosting.tsx";
+import { store } from "./redux/store.js";
+import { Provider } from "react-redux";
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <Provider store={store}>
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
@@ -35,5 +36,5 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/institute" element={<InstituteLanding />} />
       </Routes>
     </Router>
-  </StrictMode>
+  </Provider>
 );
