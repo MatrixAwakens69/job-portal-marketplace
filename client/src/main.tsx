@@ -9,6 +9,7 @@ import StudentLanding from "./pages/landing/Student.tsx";
 import InstituteLanding from "./pages/landing/Institute.tsx";
 import EmployerSignup from "./pages/Register/EmployerSignup.tsx";
 import EmployerSignin from "./pages/SignIn/EmployerSignin.tsx";
+import EmployerSignout from "./pages/SignOut/EmployerSignout.tsx";
 import EmployerDashboard from "./pages/Dashboard/EmployerDashboard.tsx";
 import StudentSignup from "./pages/Register/StudentSignup.tsx";
 import StudentSignin from "./pages/SignIn/StudentSignin.tsx";
@@ -17,6 +18,7 @@ import JobPosting from "./pages/JobPosting.tsx";
 import { persistor, store } from "./redux/store.js";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import PrivateDashboard from "./pages/components/PrivateDashboard.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
@@ -29,12 +31,19 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/employer" element={<EmployerLanding />} />
           <Route path="/employer/register" element={<EmployerSignup />} />
           <Route path="/employer/login" element={<EmployerSignin />} />
-          <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+          <Route element={<PrivateDashboard />}>
+            <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+          </Route>
           <Route path="/employer/create" element={<JobPosting />} />
+          <Route element={<PrivateDashboard />}>
+            <Route path="/employer/logout" element={<EmployerSignout />} />
+          </Route>
           <Route path="/student" element={<StudentLanding />} />
           <Route path="/student/register" element={<StudentSignup />} />
           <Route path="/student/login" element={<StudentSignin />} />
-          <Route path="/student/dashboard" element={<StudentDashboard />} />
+          <Route element={<PrivateDashboard />}>
+            <Route path="/student/dashboard" element={<StudentDashboard />} />
+          </Route>
           <Route path="/institute" element={<InstituteLanding />} />
         </Routes>
       </Router>

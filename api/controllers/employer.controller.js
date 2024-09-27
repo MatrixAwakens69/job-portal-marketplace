@@ -49,6 +49,14 @@ export const signin = async (req, res, next) => {
   }
 };
 
+export const signout = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token").json("Signout successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createJobPosting = async (req, res, next) => {
   try {
     const { title, description, requirements, location, salary } = req.body;

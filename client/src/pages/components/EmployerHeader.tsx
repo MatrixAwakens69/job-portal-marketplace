@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { FaBars } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const EmployerHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const { currentUser } = useSelector((state: RootState) => state.user);
 
   const handleClickOutside = (event: { target: any }) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -30,12 +34,21 @@ const EmployerHeader = () => {
         Jazzee Marketplace
       </Link>
       <div className="hidden md:flex md:space-x-4">
-        <Link
-          to="/employer"
-          className="text-white hover:text-[#3E92CC] transition"
-        >
-          Overview
-        </Link>
+        {currentUser ? (
+          <Link
+            to="/employer/dashboard"
+            className="text-white hover:text-[#3E92CC] transition"
+          >
+            Dashboard
+          </Link>
+        ) : (
+          <Link
+            to="/employer"
+            className="text-white hover:text-[#3E92CC] transition"
+          >
+            Overview
+          </Link>
+        )}
         <Link
           to="/hiring"
           className="text-white hover:text-[#3E92CC] transition"
@@ -50,18 +63,29 @@ const EmployerHeader = () => {
         </Link>
       </div>
       <div className="hidden md:flex">
-        <Link
-          to="/employer/login"
-          className="btn btn-outline rounded-full btn-primary mx-2 text-white border-[#3E92CC] hover:bg-[#3E92CC]"
-        >
-          Sign In
-        </Link>
-        <Link
-          to="/employer/register"
-          className="btn btn-primary rounded-full mx-2 bg-[#3E92CC] text-[#13293D] hover:bg-[#2A628F]"
-        >
-          Join
-        </Link>
+        {currentUser ? (
+          <Link
+            to="/employer/logout"
+            className="btn btn-primary rounded-full mx-2 bg-[#3E92CC] text-[#13293D] hover:bg-[#2A628F]"
+          >
+            Sign Out
+          </Link>
+        ) : (
+          <Link
+            to="/employer/login"
+            className="btn btn-primary rounded-full mx-2 bg-[#3E92CC] text-[#13293D] hover:bg-[#2A628F]"
+          >
+            Sign In
+          </Link>
+        )}
+        {!currentUser && (
+          <Link
+            to="/employer/register"
+            className="btn btn-primary rounded-full mx-2 bg-[#3E92CC] text-[#13293D] hover:bg-[#2A628F]"
+          >
+            Join
+          </Link>
+        )}
       </div>
       <div className="md:hidden relative" ref={dropdownRef}>
         <button
@@ -72,13 +96,21 @@ const EmployerHeader = () => {
         </button>
         {isOpen && (
           <div className="absolute right-0 mt-1 w-48 bg-[#13293D] bg-opacity-90 backdrop-blur-lg rounded-md shadow-lg z-10 animate-dropdown">
-            <Link
-              to="/employer"
-              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Overview
-            </Link>
+            {currentUser ? (
+              <Link
+                to="/employer/dashboard"
+                className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                to="/employer"
+                className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+              >
+                Overview
+              </Link>
+            )}
             <Link
               to="/hiring"
               className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
@@ -93,20 +125,30 @@ const EmployerHeader = () => {
             >
               About Us
             </Link>
-            <Link
-              to="/employer/login"
-              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/employer/register"
-              className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Join
-            </Link>
+            {currentUser ? (
+              <Link
+                to="/employer/logout"
+                className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+              >
+                Sign Out
+              </Link>
+            ) : (
+              <Link
+                to="/employer/login"
+                className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+              >
+                Sign In
+              </Link>
+            )}
+            {!currentUser && (
+              <Link
+                to="/employer/register"
+                className="block px-4 py-2 text-white hover:bg-[#3E92CC] hover:bg-opacity-20 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                Join
+              </Link>
+            )}
           </div>
         )}
       </div>
