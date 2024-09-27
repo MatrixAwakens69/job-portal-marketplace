@@ -12,7 +12,7 @@ const EmployerSignup = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleFileUpload = async (file: File) => {
-    const storageRef = ref(storage, `avatars/${file.name}`);
+    const storageRef = ref(storage, `logo/${file.name}`);
     await uploadBytes(storageRef, file);
     const url = await getDownloadURL(storageRef);
     return url;
@@ -25,8 +25,8 @@ const EmployerSignup = () => {
 
     try {
       const formData = new FormData(formRef.current!);
-      const file = formData.get("avatar") as File;
-      const avatarUrl = await handleFileUpload(file);
+      const file = formData.get("logo") as File;
+      const logoUrl = await handleFileUpload(file);
 
       let website = formData.get("website") as string;
       if (!website.startsWith("http://") && !website.startsWith("https://")) {
@@ -37,7 +37,7 @@ const EmployerSignup = () => {
         name: formData.get("name"),
         email: formData.get("email"),
         password: formData.get("password"),
-        avatar: avatarUrl,
+        logo: logoUrl,
         description: formData.get("description"),
         website,
       };
@@ -57,6 +57,7 @@ const EmployerSignup = () => {
         setError(errorData.message || "Account creation failed");
       }
     } catch (err) {
+      console.error(err);
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);
@@ -98,7 +99,7 @@ const EmployerSignup = () => {
               />
               <input
                 type="file"
-                name="avatar"
+                name="logo"
                 className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
               />
               <textarea

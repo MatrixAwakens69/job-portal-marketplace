@@ -57,6 +57,43 @@ export const signout = async (req, res, next) => {
   }
 };
 
+export const getProfile = async (req, res, next) => {
+  try {
+    const employer = await Employer.findById(req.user.id);
+    const { password, ...rest } = employer._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { name, email, logo, description, website } = req.body;
+    const updatedEmployer = await Employer.findByIdAndUpdate(
+      req.user.id,
+      { name, email, logo, description, website },
+      { new: true }
+    );
+    const { password, ...rest } = updatedEmployer._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteAccount = async (req, res, next) => {
+  try {
+    await Employer.findByIdAndDelete(req.user.id);
+    res
+      .clearCookie("access_token")
+      .status(200)
+      .json("Account deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createJobPosting = async (req, res, next) => {
   try {
     const { title, description, requirements, location, salary } = req.body;
@@ -73,6 +110,53 @@ export const createJobPosting = async (req, res, next) => {
 
     await newJobPosting.save();
     res.status(201).json("Job posting created successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getJobPostings = async (req, res, next) => {
+  try {
+    const employerId = req.user.id;
+    const jobPostings = await JobPosting.find({ employer_id: employerId });
+    res.status(200).json(jobPostings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateJobPosting = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const {
+      title,
+      description,
+      requirements,
+      location,
+      salary,
+      numberOfApplicants,
+    } = req.body;
+    await JobPosting.findByIdAndUpdate(id, {
+      title,
+      description,
+      requirements: Array.isArray(requirements)
+        ? requirements
+        : requirements.split(","),
+      location: Array.isArray(location) ? location : location.split(","),
+      salary,
+      numberOfApplicants,
+    });
+    res.status(200).json("Job posting updated successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteJobPosting = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await JobPosting.findByIdAndDelete(id);
+    res.status(200).json("Job posting deleted successfully");
   } catch (error) {
     next(error);
   }

@@ -30,7 +30,6 @@ const JobPosting = () => {
     });
 
     if (response.ok) {
-      alert("Job posting created successfully!");
       navigate("/employer/dashboard");
     } else {
       alert("Failed to create job posting");
