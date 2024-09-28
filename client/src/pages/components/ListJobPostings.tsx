@@ -9,10 +9,12 @@ const ListJobPostings = () => {
     location: string[];
     salary: number | { $numberDecimal: string };
     numberOfApplicants: number;
+    updatedAt: string;
   }
 
   const [jobPostings, setJobPostings] = useState<JobPosting[]>([]);
   const [loading, setLoading] = useState(true);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [editJobData, setEditJobData] = useState<Partial<JobPosting>>({});
@@ -38,6 +40,10 @@ const ListJobPostings = () => {
 
         if (response.ok) {
           const data = await response.json();
+          data.sort(
+            (a: JobPosting, b: JobPosting) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
           setJobPostings(data);
         } else {
           setError("Failed to fetch job postings.");
@@ -92,6 +98,7 @@ const ListJobPostings = () => {
     const { _id, ...updateData } = editJobData;
 
     try {
+      setUpdateLoading(true);
       const response = await fetch(`/api/employer/update/${_id}`, {
         method: "PUT",
         headers: {
@@ -109,8 +116,10 @@ const ListJobPostings = () => {
       } else {
         setError("Failed to update job posting.");
       }
+      setUpdateLoading(false);
     } catch (err) {
       setError("An unexpected error occurred.");
+      setUpdateLoading(false);
     }
   };
 
@@ -123,34 +132,38 @@ const ListJobPostings = () => {
   }
 
   return (
-    <div>
-      <h2 className="text-2xl mb-4">Job Postings</h2>
-      <div className="space-y-4">
+    <div className="container mx-auto p-4 max-h-screen overflow-y-auto">
+      <h2 className="text-3xl font-bold mb-6 text-center">Job Postings</h2>
+      <div className="space-y-6">
         <div
-          className="p-4 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-md cursor-pointer hover:bg-opacity-20 transition"
+          className="p-6 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg cursor-pointer hover:shadow-xl transition"
           onClick={() => navigate("/employer/create")}
         >
-          <h3 className="text-xl text-center">Create New Job Posting</h3>
+          <h3 className="text-2xl text-center">Create New Job Posting</h3>
         </div>
         {jobPostings.map((job) => (
           <div
             key={job._id}
-            className="p-4 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-md flex flex-col md:flex-row items-center"
+            className="p-6 bg-blue-500 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-1"
           >
             <div
               className="flex-grow cursor-pointer"
               onClick={() => handleEdit(job)}
             >
-              <h3 className="text-xl">{job.title}</h3>
-              <p className="text-sm">{job.description}</p>
-              <p className="text-sm">Location: {job.location.join(", ")}</p>
-              <p className="text-sm">
+              <h3 className="text-2xl font-semibold text-gray-300">
+                {job.title}
+              </h3>
+              <p className="text-gray-100 mt-2">{job.description}</p>
+              <p className="text-gray-100 mt-2">
+                Location: {job.location.join(", ")}
+              </p>
+              <p className="text-gray-100 mt-2">
                 Salary: $
                 {typeof job.salary === "number"
                   ? job.salary
                   : job.salary.$numberDecimal}
               </p>
-              <p className="text-sm">
+              <p className="text-gray-100 mt-2">
                 Number of Applicants: {job.numberOfApplicants}
               </p>
             </div>
@@ -174,8 +187,10 @@ const ListJobPostings = () => {
               </svg>
             </button>
             {confirmDelete === job._id && (
-              <div className="flex flex-col items-center">
-                <h3>Are you sure you want to remove this listing?</h3>
+              <div className="flex flex-col items-center mt-4">
+                <h3 className="text-lg font-semibold">
+                  Are you sure you want to remove this listing?
+                </h3>
                 <div className="mt-4 flex space-x-4">
                   <button
                     className="py-2 px-4 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
@@ -201,7 +216,7 @@ const ListJobPostings = () => {
                     onChange={(e) =>
                       setEditJobData({ ...editJobData, title: e.target.value })
                     }
-                    className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
+                    className="w-full p-2 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Title"
                   />
                   <textarea
@@ -212,7 +227,7 @@ const ListJobPostings = () => {
                         description: e.target.value,
                       })
                     }
-                    className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
+                    className="w-full p-2 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Description"
                   />
                   <input
@@ -224,7 +239,7 @@ const ListJobPostings = () => {
                         location: e.target.value.split(","),
                       })
                     }
-                    className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
+                    className="w-full p-2 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Location"
                   />
                   <input
@@ -240,14 +255,15 @@ const ListJobPostings = () => {
                         salary: parseFloat(e.target.value),
                       })
                     }
-                    className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
+                    className="w-full p-2 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Salary"
                   />
                   <button
-                    className="w-full py-2 bg-[#3E92CC] text-[#13293D] rounded-full hover:bg-[#2A628F] transition transform hover:scale-105"
+                    className="w-full py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition transform hover:scale-105"
                     onClick={handleUpdate}
+                    disabled={updateLoading}
                   >
-                    Update
+                    {updateLoading ? "Updating..." : "Update"}
                   </button>
                 </div>
               </div>

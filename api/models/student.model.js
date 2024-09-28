@@ -74,6 +74,10 @@ const studentSchema = new mongoose.Schema(
     resume_cv: {
       type: String,
     },
+    type: {
+      type: String,
+      default: "student",
+    },
   },
   { timestamps: true }
 );

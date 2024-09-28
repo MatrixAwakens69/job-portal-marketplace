@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EmployerHeader from "./components/EmployerHeader";
 import Footer from "./components/Footer";
@@ -6,9 +6,14 @@ import Footer from "./components/Footer";
 const JobPosting = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+
     const formData = new FormData(formRef.current!);
     const data = {
       title: formData.get("title"),
@@ -20,19 +25,27 @@ const JobPosting = () => {
 
     const token = localStorage.getItem("token");
 
-    const response = await fetch("/api/employer/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch("/api/employer/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (response.ok) {
-      navigate("/employer/dashboard");
-    } else {
-      alert("Failed to create job posting");
+      if (response.ok) {
+        navigate("/employer/dashboard");
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Failed to create job posting");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -80,10 +93,14 @@ const JobPosting = () => {
             <button
               type="submit"
               className="w-full py-2 bg-[#3E92CC] text-[#13293D] rounded-full hover:bg-[#2A628F] transition transform hover:scale-105"
+              disabled={loading}
             >
-              Create Job Posting
+              {loading ? "Creating..." : "Create Job Posting"}
             </button>
           </form>
+          {error && (
+            <div className="text-red-500 mt-4 text-center">{error}</div>
+          )}
         </div>
       </main>
       <Footer />
