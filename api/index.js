@@ -26,7 +26,7 @@ mongoose
 
 const __dirname = path.resolve();
 
-app.get("/", (req, res) => {
+app.get("/api/test", (req, res) => {
   res.send("Test route");
 });
 
