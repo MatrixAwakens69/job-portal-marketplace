@@ -21,7 +21,7 @@ import JobPosting from "./pages/JobPosting.tsx";
 import InstituteSignin from "./pages/SignIn/InstituteSignin.tsx";
 import PrivateEmployer from "./pages/components/private/PrivateEmployer.tsx";
 import PrivateStudent from "./pages/components/private/PrivateStudent.tsx";
-import PrivateInstitute from "./pages/components/private/PrivateInstitute.tsx";
+// import PrivateInstitute from "./pages/components/private/PrivateInstitute.tsx";
 import PrivateHomepage from "./pages/components/private/PrivateHomepage.tsx";
 
 createRoot(document.getElementById("root")!).render(

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { storage } from "../../firebase"; // Adjust the path as needed
+import { storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const EmployerProfile = () => {
