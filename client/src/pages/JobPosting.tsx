@@ -15,12 +15,22 @@ const JobPosting = () => {
     setError(null);
 
     const formData = new FormData(formRef.current!);
+    const startDate = formData.get("start_date") as string;
+
+    if (new Date(startDate) <= new Date()) {
+      setError("Start date cannot be before the current date.");
+      setLoading(false);
+      return;
+    }
+
     const data = {
       title: formData.get("title"),
+      type: formData.get("type"),
       description: formData.get("description"),
       requirements: formData.get("requirements"),
       location: formData.get("location"),
       salary: formData.get("salary"),
+      start_date: formData.get("start_date"),
     };
 
     const token = localStorage.getItem("token");
@@ -63,6 +73,15 @@ const JobPosting = () => {
               className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
               required
             />
+            <select
+              name="type"
+              className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
+              required
+            >
+              <option value="">Select Type</option>
+              <option value="Job">Job</option>
+              <option value="Internship">Internship</option>
+            </select>
             <textarea
               name="description"
               placeholder="Job Description"
@@ -90,6 +109,13 @@ const JobPosting = () => {
               className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
               required
             />
+            <input
+              type="date"
+              name="start_date"
+              placeholder="Start Date"
+              className="w-full p-2 rounded bg-white bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-[#3E92CC]"
+              required
+            />
             <button
               type="submit"
               className="w-full py-2 bg-[#3E92CC] text-[#13293D] rounded-full hover:bg-[#2A628F] transition transform hover:scale-105"
@@ -98,8 +124,10 @@ const JobPosting = () => {
               {loading ? "Creating..." : "Create Job Posting"}
             </button>
           </form>
-          {error && (
+          {error ? (
             <div className="text-red-500 mt-4 text-center">{error}</div>
+          ) : (
+            <div className="mt-10"></div>
           )}
         </div>
       </main>

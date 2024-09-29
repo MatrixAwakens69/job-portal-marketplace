@@ -6,6 +6,11 @@ const jobPostingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      enum: ["Job", "Internship"],
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -20,6 +25,10 @@ const jobPostingSchema = new mongoose.Schema(
     },
     salary: {
       type: mongoose.Types.Decimal128,
+      required: true,
+    },
+    start_date: {
+      type: Date,
       required: true,
     },
     numberOfApplicants: {

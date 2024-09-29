@@ -96,15 +96,25 @@ export const deleteAccount = async (req, res, next) => {
 
 export const createJobPosting = async (req, res, next) => {
   try {
-    const { title, description, requirements, location, salary } = req.body;
+    const {
+      title,
+      type,
+      description,
+      requirements,
+      location,
+      salary,
+      start_date,
+    } = req.body;
     const employerId = req.user.id;
 
     const newJobPosting = new JobPosting({
       title,
+      type,
       description,
       requirements: requirements.split(","),
       location: location.split(","),
       salary,
+      start_date,
       employer_id: employerId,
     });
 
@@ -130,20 +140,24 @@ export const updateJobPosting = async (req, res, next) => {
     const { id } = req.params;
     const {
       title,
+      type,
       description,
       requirements,
       location,
       salary,
+      start_date,
       numberOfApplicants,
     } = req.body;
     await JobPosting.findByIdAndUpdate(id, {
       title,
+      type,
       description,
       requirements: Array.isArray(requirements)
         ? requirements
         : requirements.split(","),
       location: Array.isArray(location) ? location : location.split(","),
       salary,
+      start_date,
       numberOfApplicants,
     });
     res.status(200).json("Job posting updated successfully");

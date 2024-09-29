@@ -5,9 +5,12 @@ const ListJobPostings = () => {
   interface JobPosting {
     _id: string;
     title: string;
+    type: string;
     description: string;
+    requirements: string[];
     location: string[];
     salary: number | { $numberDecimal: string };
+    start_date: string;
     numberOfApplicants: number;
     updatedAt: string;
   }
@@ -153,9 +156,16 @@ const ListJobPostings = () => {
               <h3 className="text-2xl font-semibold text-gray-300">
                 {job.title}
               </h3>
+              <p className="text-gray-100 mt-2">Type: {job.type}</p>
               <p className="text-gray-100 mt-2">{job.description}</p>
               <p className="text-gray-100 mt-2">
+                Requirements: {job.requirements.join(", ")}
+              </p>
+              <p className="text-gray-100 mt-2">
                 Location: {job.location.join(", ")}
+              </p>
+              <p className="text-gray-100 mt-2">
+                Start Date: {new Date(job.start_date).toLocaleDateString()}
               </p>
               <p className="text-gray-100 mt-2">
                 Salary: $
@@ -232,6 +242,18 @@ const ListJobPostings = () => {
                   />
                   <input
                     type="text"
+                    value={editJobData.requirements?.join(", ") || ""}
+                    onChange={(e) =>
+                      setEditJobData({
+                        ...editJobData,
+                        requirements: e.target.value.split(","),
+                      })
+                    }
+                    className="w-full p-2 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Requirements"
+                  />
+                  <input
+                    type="text"
                     value={editJobData.location?.join(", ") || ""}
                     onChange={(e) =>
                       setEditJobData({
@@ -241,6 +263,18 @@ const ListJobPostings = () => {
                     }
                     className="w-full p-2 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="Location"
+                  />
+                  <input
+                    type="date"
+                    value={editJobData.start_date || ""}
+                    onChange={(e) =>
+                      setEditJobData({
+                        ...editJobData,
+                        start_date: e.target.value,
+                      })
+                    }
+                    className="w-full p-2 rounded bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Start Date"
                   />
                   <input
                     type="number"

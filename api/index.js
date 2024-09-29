@@ -7,7 +7,6 @@ import path from "path";
 import employerRouter from "./routes/employer.route.js";
 import instituteRouter from "./routes/institute.route.js";
 import studentRouter from "./routes/student.route.js";
-import exp from "constants";
 
 const app = express();
 dotenv.config();
